@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "35062421586",
+    "project_id": "catstagram-db47e",
+    "storage_bucket": "catstagram-db47e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35062421586:android:cd9ddc4e40b7db2451678b",
+        "android_client_info": {
+          "package_name": "com.example.catstagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35062421586-rvbk4kl6u0o7tbgtm2jr0r3d1726rhdn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANAXTXnO60IczyYGPJF2m3L9KNpgu6joM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35062421586-rvbk4kl6u0o7tbgtm2jr0r3d1726rhdn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
