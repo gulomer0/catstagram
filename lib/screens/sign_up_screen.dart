@@ -1,7 +1,7 @@
-import 'dart:ffi';
+import 'dart:typed_data';
 
+import 'package:catstagram/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -16,6 +16,7 @@ class _SignupScreenState extends State<SignUpScreen> {
   var _passwordController = TextEditingController();
   var _bioController = TextEditingController();
   var _usarnameController = TextEditingController();
+  //-Uint8List? _image;
 
   @override
   void dispose() {
@@ -137,8 +138,14 @@ class _SignupScreenState extends State<SignUpScreen> {
                   elevation: MaterialStateProperty.all<double>(0),
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
                 ),
-                onPressed: () {
-                  // Respond to button press
+                onPressed: () async{
+                  String res = await AuthMethods().signUpUser(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    username: _usarnameController.text,
+                    bio: _bioController.text,
+                    //-file: _image!,
+                  );
                 },
                 child: Text('Sign Up'),
               ),
