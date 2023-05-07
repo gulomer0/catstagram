@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:catstagram/resources/auth_methods.dart';
+import 'package:catstagram/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -26,6 +28,14 @@ class _SignupScreenState extends State<SignUpScreen> {
     _passwordController.dispose();
     _bioController.dispose();
     _usarnameController.dispose();
+  }
+
+ selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    // set state because we need to display the image we selected on the circle avatar
+    setState(() {
+      _image = im;
+    });
   }
 
   @override
@@ -56,9 +66,7 @@ class _SignupScreenState extends State<SignUpScreen> {
                   bottom: 0,
                   right: 0,
                   child: IconButton(
-                    onPressed: () {
-                      // Respond to button press
-                    },
+                    onPressed: selectImage,
                     icon: Icon(
                       size: 30,
                       Icons.add_a_photo, 
