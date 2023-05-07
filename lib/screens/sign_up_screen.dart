@@ -16,7 +16,7 @@ class _SignupScreenState extends State<SignUpScreen> {
   var _passwordController = TextEditingController();
   var _bioController = TextEditingController();
   var _usarnameController = TextEditingController();
-  //-Uint8List? _image;
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -144,7 +144,7 @@ class _SignupScreenState extends State<SignUpScreen> {
                     password: _passwordController.text,
                     username: _usarnameController.text,
                     bio: _bioController.text,
-                    //-file: _image!,
+                    file: _image!,
                   );
                 },
                 child: Text('Sign Up'),

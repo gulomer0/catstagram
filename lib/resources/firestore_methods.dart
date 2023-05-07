@@ -63,12 +63,14 @@ class FireStoreMethods {
       if (text.isNotEmpty) {
         // if the likes list contains the user uid, we need to remove it
         String commentId = const Uuid().v1();
+        
         _firestore
             .collection('posts')
             .doc(postId)
             .collection('comments')
             .doc(commentId)
             .set({
+
           'profilePic': profilePic,
           'name': name,
           'uid': uid,
@@ -98,15 +100,13 @@ class FireStoreMethods {
     return res;
   }
 
-  Future<void> followUser(
-    String uid,
-    String followId
-  ) async {
+  Future<void> followUser(String uid, String followId) async {
     try {
-      DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(uid).get();
       List following = (snap.data()! as dynamic)['following'];
 
-      if(following.contains(followId)) {
+      if (following.contains(followId)) {
         await _firestore.collection('users').doc(followId).update({
           'followers': FieldValue.arrayRemove([uid])
         });
@@ -123,8 +123,7 @@ class FireStoreMethods {
           'following': FieldValue.arrayUnion([followId])
         });
       }
-
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }

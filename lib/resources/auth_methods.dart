@@ -25,7 +25,7 @@ class AuthMethods {
     required String password,
     required String username,
     required String bio,
-    //-required Uint8List file,
+    required Uint8List file,
   }) async {
     String res = "Some error occurred";
     try {
@@ -33,7 +33,7 @@ class AuthMethods {
           password.isNotEmpty ||
           username.isNotEmpty ||
           bio.isNotEmpty 
-          //-|| file != null
+          || file != null
           ) {
         // registering user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
@@ -41,13 +41,13 @@ class AuthMethods {
           password: password,
         );
 
-        //-String photoUrl =
-            //-await StorageMethods().uploadImageToStorage('profilePics', file, false);
+        String photoUrl =
+            await StorageMethods().uploadImageToStorage('profilePics', file, false);
 
         model.User _user = model.User(
           username: username,
           uid: cred.user!.uid,
-          //-photoUrl: photoUrl,
+          photoUrl: photoUrl,
           email: email,
           bio: bio,
           followers: [],
