@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light()/*.copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),*/,
-      home: const SignUpScreen(),
+      home: const LoginScreen(),
       
         /*ResponsiveLayout(
         webScreenLayout: WebScreenLayout(), 

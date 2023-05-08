@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:catstagram/resources/auth_methods.dart';
+import 'package:catstagram/screens/login_screen.dart';
 import 'package:catstagram/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,12 +14,12 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignUpScreen> {
-
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
   var _bioController = TextEditingController();
   var _usarnameController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -30,12 +31,31 @@ class _SignupScreenState extends State<SignUpScreen> {
     _usarnameController.dispose();
   }
 
- selectImage() async {
+  selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     // set state because we need to display the image we selected on the circle avatar
     setState(() {
       _image = im;
     });
+  }
+
+  void signUpUser() async {
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usarnameController.text,
+      bio: _bioController.text,
+      file: _image!,
+    );
+    if (res == "success") {
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res),
+        ),
+      );
+    }
   }
 
   @override
@@ -44,7 +64,8 @@ class _SignupScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text("from Sign Up Screen", style: TextStyle(color: Colors.orangeAccent)),
+        title: Text("from Sign Up Screen",
+            style: TextStyle(color: Colors.orangeAccent)),
       ),
       body: Center(
         child: Column(
@@ -55,13 +76,20 @@ class _SignupScreenState extends State<SignUpScreen> {
             ),
             Stack(
               children: [
-                CircleAvatar(
-                  radius: 80,
-                  child: CircleAvatar(
-                    radius: 80,
-                    backgroundImage: AssetImage("assets/images/empty.jpeg"),
-                  ),
-                ),
+                _image != null
+                    ? CircleAvatar(
+                        radius: 80,
+                        backgroundImage: MemoryImage(_image!),
+                        backgroundColor: Colors.white,
+                      )
+                    : const CircleAvatar(
+                        radius: 80,
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundImage:
+                              AssetImage("assets/images/empty.jpeg"),
+                        ),
+                      ),
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -69,8 +97,8 @@ class _SignupScreenState extends State<SignUpScreen> {
                     onPressed: selectImage,
                     icon: Icon(
                       size: 30,
-                      Icons.add_a_photo, 
-                      ),
+                      Icons.add_a_photo,
+                    ),
                   ),
                 ),
               ],
@@ -117,7 +145,7 @@ class _SignupScreenState extends State<SignUpScreen> {
                 decoration: InputDecoration(
                   filled: true,
                   border: InputBorder.none,
-                  hintText: "Enter your password", 
+                  hintText: "Enter your password",
                 ),
               ),
             ),
@@ -144,17 +172,10 @@ class _SignupScreenState extends State<SignUpScreen> {
               child: ElevatedButton(
                 style: ButtonStyle(
                   elevation: MaterialStateProperty.all<double>(0),
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.orangeAccent),
                 ),
-                onPressed: () async{
-                  String res = await AuthMethods().signUpUser(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    username: _usarnameController.text,
-                    bio: _bioController.text,
-                    file: _image!,
-                  );
-                },
+                onPressed: signUpUser,
                 child: Text('Sign Up'),
               ),
             ),
@@ -165,15 +186,16 @@ class _SignupScreenState extends State<SignUpScreen> {
                 Text("Already have an account?"),
                 TextButton(
                   onPressed: () {
-                    // Respond to button press
+                    Navigator.pop(context);
                   },
-                  child: Text('Login', style: TextStyle(color: Colors.orangeAccent)),
+                  child: Text('Login',
+                      style: TextStyle(color: Colors.orangeAccent)),
                 ),
               ],
             ),
           ],
         ),
-      ), 
+      ),
     );
   }
 }

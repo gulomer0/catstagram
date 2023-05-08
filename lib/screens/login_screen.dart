@@ -1,3 +1,6 @@
+import 'package:catstagram/resources/auth_methods.dart';
+import 'package:catstagram/screens/home_screen.dart';
+import 'package:catstagram/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -9,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
 
@@ -20,13 +22,36 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
+
+  void loginUser() async {
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    if (res == "success") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text("from Login Screen", style: TextStyle(color: Colors.orangeAccent)),
+        title: Text("from Login Screen",
+            style: TextStyle(color: Colors.orangeAccent)),
       ),
       body: Center(
         child: Column(
@@ -57,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   filled: true,
                   border: InputBorder.none,
-                  hintText: "Enter your password", 
+                  hintText: "Enter your password",
                 ),
               ),
             ),
@@ -69,30 +94,33 @@ class _LoginScreenState extends State<LoginScreen> {
               child: ElevatedButton(
                 style: ButtonStyle(
                   elevation: MaterialStateProperty.all<double>(0),
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.orangeAccent),
                 ),
-                onPressed: () {
-                  // Respond to button press
-                },
+                onPressed: loginUser,
                 child: Text('Login'),
               ),
             ),
-           Spacer(),
+            Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Don't have an account?"),
                 TextButton(
                   onPressed: () {
-                    // Respond to button press
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SignUpScreen()));
                   },
-                  child: Text('Sign Up', style: TextStyle(color: Colors.orangeAccent)),
+                  child: Text('Sign Up',
+                      style: TextStyle(color: Colors.orangeAccent)),
                 ),
               ],
             ),
           ],
         ),
-      ), 
+      ),
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'dart:typed_data';
+import 'package:catstagram/screens/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:catstagram/models/user.dart' as model;
 import 'package:catstagram/resources/storage_methods.dart';
+import 'package:flutter/material.dart';
 
 class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -32,17 +34,16 @@ class AuthMethods {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          bio.isNotEmpty 
-          || file != null
-          ) {
+          bio.isNotEmpty ||
+          file != null) {
         // registering user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
-        String photoUrl =
-            await StorageMethods().uploadImageToStorage('profilePics', file, false);
+        String photoUrl = await StorageMethods()
+            .uploadImageToStorage('profilePics', file, false);
 
         model.User _user = model.User(
           username: username,
@@ -61,10 +62,8 @@ class AuthMethods {
             .set(_user.toJson());
 
         res = "success";
-
       } else {
         res = "Please enter all the fields";
-        
       }
     } catch (err) {
       return err.toString();
