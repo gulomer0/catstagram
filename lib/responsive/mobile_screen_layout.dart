@@ -62,7 +62,6 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         },
       ),
     );
-    ;
   }
 }
  

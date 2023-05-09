@@ -66,132 +66,136 @@ class _SignupScreenState extends State<SignUpScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 70,
-            ),
-            Stack(
-              children: [
-                _image != null
-                    ? CircleAvatar(
-                        radius: 80,
-                        backgroundImage: MemoryImage(_image!),
-                        backgroundColor: Colors.white,
-                      )
-                    : const CircleAvatar(
-                        radius: 80,
-                        child: CircleAvatar(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 70,
+              ),
+              Stack(
+                children: [
+                  _image != null
+                      ? CircleAvatar(
                           radius: 80,
-                          backgroundImage:
-                              AssetImage("assets/images/empty.jpeg"),
+                          backgroundImage: MemoryImage(_image!),
+                          backgroundColor: Colors.white,
+                        )
+                      : const CircleAvatar(
+                          radius: 80,
+                          child: CircleAvatar(
+                            radius: 80,
+                            backgroundImage:
+                                AssetImage("assets/images/empty.jpeg"),
+                          ),
                         ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: IconButton(
+                      onPressed: selectImage,
+                      icon: Icon(
+                        size: 30,
+                        Icons.add_a_photo,
                       ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: IconButton(
-                    onPressed: selectImage,
-                    icon: Icon(
-                      size: 30,
-                      Icons.add_a_photo,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 35,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                controller: _usarnameController,
-                cursorColor: Colors.orangeAccent,
-                decoration: InputDecoration(
-                  filled: true,
-                  border: InputBorder.none,
-                  hintText: "Enter your username",
+                ],
+              ),
+              SizedBox(
+                height: 35,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextField(
+                  controller: _usarnameController,
+                  cursorColor: Colors.orangeAccent,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: InputBorder.none,
+                    hintText: "Enter your username",
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                controller: _emailController,
-                cursorColor: Colors.orangeAccent,
-                decoration: InputDecoration(
-                  filled: true,
-                  border: InputBorder.none,
-                  hintText: "Enter your email",
+              SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextField(
+                  controller: _emailController,
+                  cursorColor: Colors.orangeAccent,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: InputBorder.none,
+                    hintText: "Enter your email",
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                controller: _passwordController,
-                cursorColor: Colors.orangeAccent,
-                obscureText: true,
-                decoration: InputDecoration(
-                  filled: true,
-                  border: InputBorder.none,
-                  hintText: "Enter your password",
+              SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextField(
+                  controller: _passwordController,
+                  cursorColor: Colors.orangeAccent,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: InputBorder.none,
+                    hintText: "Enter your password",
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                controller: _bioController,
-                cursorColor: Colors.orangeAccent,
-                decoration: InputDecoration(
-                  filled: true,
-                  border: InputBorder.none,
-                  hintText: "Enter your bio",
+              SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextField(
+                  controller: _bioController,
+                  cursorColor: Colors.orangeAccent,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: InputBorder.none,
+                    hintText: "Enter your bio",
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  elevation: MaterialStateProperty.all<double>(0),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                ),
-                onPressed: signUpUser,
-                child: Text('Sign Up'),
+              SizedBox(
+                height: 10,
               ),
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Already have an account?"),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Login',
-                      style: TextStyle(color: Colors.orangeAccent)),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all<double>(0),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.orangeAccent),
+                  ),
+                  onPressed: signUpUser,
+                  child: Text('Sign Up'),
                 ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.14,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Already have an account?"),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Login',
+                        style: TextStyle(color: Colors.orangeAccent)),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

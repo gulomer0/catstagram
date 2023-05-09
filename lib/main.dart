@@ -22,18 +22,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Catstagram",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData
-          .dark() /*.copyWith(
+      theme: ThemeData.light(),
+      /*.copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),*/
-      ,
+
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             // Checking if the snapshot has any data or not
             if (snapshot.hasData) {
-              // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
               return const LoginScreen();
             } else if (snapshot.hasError) {
               return Center(
@@ -41,14 +40,12 @@ class MyApp extends StatelessWidget {
               );
             }
           }
-
           // means connection to future hasnt been made yet
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-
           return const LoginScreen();
         },
       ),

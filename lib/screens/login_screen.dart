@@ -53,71 +53,75 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Lottie.asset('assets/lotties/happy_cat.json'),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                controller: _emailController,
-                cursorColor: Colors.orangeAccent,
-                decoration: InputDecoration(
-                  filled: true,
-                  border: InputBorder.none,
-                  hintText: "Enter your email",
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Lottie.asset('assets/lotties/happy_cat.json'),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextField(
+                  controller: _emailController,
+                  cursorColor: Colors.orangeAccent,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: InputBorder.none,
+                    hintText: "Enter your email",
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                controller: _passwordController,
-                cursorColor: Colors.orangeAccent,
-                obscureText: true,
-                decoration: InputDecoration(
-                  filled: true,
-                  border: InputBorder.none,
-                  hintText: "Enter your password",
+              SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextField(
+                  controller: _passwordController,
+                  cursorColor: Colors.orangeAccent,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: InputBorder.none,
+                    hintText: "Enter your password",
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  elevation: MaterialStateProperty.all<double>(0),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                ),
-                onPressed: loginUser,
-                child: Text('Login'),
+              SizedBox(
+                height: 10,
               ),
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Don't have an account?"),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignUpScreen()));
-                  },
-                  child: Text('Sign Up',
-                      style: TextStyle(color: Colors.orangeAccent)),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all<double>(0),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.orangeAccent),
+                  ),
+                  onPressed: loginUser,
+                  child: Text('Login'),
                 ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.14,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Don't have an account?"),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpScreen()));
+                    },
+                    child: Text('Sign Up',
+                        style: TextStyle(color: Colors.orangeAccent)),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
