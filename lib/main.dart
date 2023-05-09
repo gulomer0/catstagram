@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: "Catstagram",
       debugShowCheckedModeBanner: false,
       theme: ThemeData
-          .light() /*.copyWith(
+          .dark() /*.copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),*/
       ,
