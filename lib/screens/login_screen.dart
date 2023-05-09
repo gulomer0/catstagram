@@ -1,4 +1,5 @@
 import 'package:catstagram/resources/auth_methods.dart';
+import 'package:catstagram/responsive/mobile_screen_layout.dart';
 import 'package:catstagram/screens/home_screen.dart';
 import 'package:catstagram/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => const MobileScreenLayout(),
         ),
       );
     } else {
@@ -50,8 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text("from Login Screen",
-            style: TextStyle(color: Colors.orangeAccent)),
       ),
       body: Center(
         child: Column(

@@ -64,8 +64,6 @@ class _SignupScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text("from Sign Up Screen",
-            style: TextStyle(color: Colors.orangeAccent)),
       ),
       body: Center(
         child: Column(
