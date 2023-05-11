@@ -3,6 +3,7 @@ import 'package:catstagram/screens/home_screen.dart';
 import 'package:catstagram/screens/likes_screen.dart';
 import 'package:catstagram/screens/profile_screen.dart';
 import 'package:catstagram/screens/search_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MobileScreenLayout extends StatefulWidget {
@@ -19,7 +20,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     SearchScreen(),
     AddScreen(),
     LikesScreen(),
-    ProfileScreen(),
+    ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
 
   @override
