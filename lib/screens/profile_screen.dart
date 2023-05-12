@@ -1,3 +1,4 @@
+import 'package:catstagram/screens/login_screen.dart';
 import 'package:catstagram/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -91,7 +92,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           CircleAvatar(
                             radius: MediaQuery.of(context).size.width * 0.10,
-                            backgroundImage: AssetImage("images/pp.jpeg"),
+                            backgroundColor: Colors.grey,
+                            backgroundImage: NetworkImage(
+                                "${userData['photoURL']}"),
                           ),
                         ],
                       ),
@@ -102,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           left: MediaQuery.of(context).size.width * 0.1),
                       child: Column(
                         children: [
-                          Text("4",
+                          Text("$postLen",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: MediaQuery.of(context).size.width *
@@ -120,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           left: MediaQuery.of(context).size.width * 0.1),
                       child: Column(
                         children: [
-                          Text("679",
+                          Text("$followers",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: MediaQuery.of(context).size.width *
@@ -138,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           left: MediaQuery.of(context).size.width * 0.1),
                       child: Column(
                         children: [
-                          Text("660",
+                          Text("$following",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: MediaQuery.of(context).size.width *
@@ -161,13 +164,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("Ömer Gül"),
+                          Text("${userData['username']}",
+                              ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("Flutter Developer"),
+                          Text("${userData['bio']}",
+                              ),
                         ],
                       ),
                     ],
@@ -175,47 +180,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.width * 0.02,
-                      left: MediaQuery.of(context).size.width * 0.04),
+                      top: MediaQuery.of(context).size.width * 0.004,
+                      ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.44,
-                        height: MediaQuery.of(context).size.width * 0.1,
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                        width: MediaQuery.of(context).size.width * 0.89,
+                        child: ElevatedButton(
+                          child: Text("Sing Out"),
+                          style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            color: Colors.grey[200],
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Düzenle"),
-                              ],
-                            )),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.44,
-                        height: MediaQuery.of(context).size.width * 0.1,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            primary: Colors.redAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                           ),
-                          elevation: 0,
-                          color: Colors.grey[200],
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Profili Paylaş"),
-                            ],
-                          ),
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top:12.0),
+                  child: Column(
+                    children: [
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 10,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 1,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            margin: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    "https://picsum.photos/200/300"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

@@ -34,15 +34,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           height: 40,
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right:12.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.message_outlined, color: Colors.grey),
-            ),
-          ),
-        ],
+        actions: [],
       ),
       body: pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
