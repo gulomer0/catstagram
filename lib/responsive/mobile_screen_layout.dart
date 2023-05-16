@@ -18,7 +18,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   var pageList = [
     HomeScreen(),
     SearchScreen(),
-    AddScreen(),
+    AddPostScreen(),
     LikesScreen(),
     ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
   ];

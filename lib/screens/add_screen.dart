@@ -1,91 +1,201 @@
+import 'dart:typed_data';
 
-import 'dart:io';
-import 'package:catstagram/resources/firestore_methods.dart';
-import 'package:catstagram/screens/add_screen_2.dart';
+import 'package:catstagram/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:catstagram/providers/user_provider.dart';
+import 'package:catstagram/resources/firestore_methods.dart';
+import 'package:catstagram/utils/colors.dart';
+import 'package:catstagram/utils/utils.dart';
+import 'package:provider/provider.dart';
 
-class AddScreen extends StatefulWidget {
-  const AddScreen({super.key});
+class AddPostScreen extends StatefulWidget {
+  const AddPostScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddScreen> createState() => _AddScreenState();
+  _AddPostScreenState createState() => _AddPostScreenState();
 }
 
-class _AddScreenState extends State<AddScreen> {
+class _AddPostScreenState extends State<AddPostScreen> {
+  Uint8List? _file;
+  bool isLoading = false;
+  final TextEditingController _descriptionController = TextEditingController();
 
-_getFromGallery() async {
-    
-    PickedFile? pickedFile = await ImagePicker().getImage(
-        source: ImageSource.gallery,
-        maxWidth: 1800,
-        maxHeight: 1800,
+  _selectImage(BuildContext parentContext) async {
+    return showDialog(
+      context: parentContext,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Create a Post'),
+          children: <Widget>[
+            SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Take a photo'),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  Uint8List file = await pickImage(ImageSource.camera);
+                  setState(() {
+                    _file = file;
+                  });
+                }),
+            SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Choose from Gallery'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  Uint8List file = await pickImage(ImageSource.gallery);
+                  setState(() {
+                    _file = file;
+                  });
+                }),
+            SimpleDialogOption(
+              padding: const EdgeInsets.all(20),
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
     );
-    if (pickedFile != null) {
-        File imageFile = File(pickedFile.path);
-    }
-}
+  }
 
-_getFromCamera() async {
-
-    PickedFile? pickedFile = await ImagePicker().getImage(
-        source: ImageSource.camera,
-        maxWidth: 1800,
-        maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-        File imageFile = File(pickedFile.path);
+  void postImage(String uid, String username, String profImage) async {
+    setState(() {
+      isLoading = true;
+    });
+    // start the loading
+    try {
+      // upload to storage and db
+      String res = await FireStoreMethods().uploadPost(
+        _descriptionController.text,
+        _file!,
+        uid,
+        username,
+        profImage,
+      );
+      if (res == "success") {
+        setState(() {
+          isLoading = false;
+        });
+        showSnackBar(
+          context,
+          'Posted!',
+        );
+        clearImage();
+      } else {
+        showSnackBar(context, res);
+      }
+    } catch (err) {
+      setState(() {
+        isLoading = false;
+      });
+      showSnackBar(
+        context,
+        err.toString(),
+      );
     }
-}
+  }
+
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: IconButton(
-        iconSize: MediaQuery.of(context).size.width * 0.15,
-        color: Colors.orangeAccent,
-        icon: Icon(Icons.upload),
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  elevation: 0,
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            _getFromCamera();
-                          },
-                          child: Text("Take a Photo", style: TextStyle(color: Colors.orangeAccent),)),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            _getFromGallery();
-                          },
-                          child: Text("Choose from Gallery", style: TextStyle(color: Colors.orangeAccent),)),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddScreen2(
-                                          imageFile: null,
-                                        )));
-                          },
-                          child: Text("Add Screen 2", style: TextStyle(color: Colors.orangeAccent),)
-                      ),
-                    ],
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+
+    return _file == null
+        ? Center(
+            child: IconButton(
+              icon: const Icon(
+                Icons.upload,
+              ),
+              onPressed: () => _selectImage(context),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: clearImage,
+              ),
+              title: const Text(
+                'Post to',
+              ),
+              centerTitle: false,
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => postImage(
+                    userProvider.getUser.uid,
+                    userProvider.getUser.username,
+                    userProvider.getUser.photoUrl,
                   ),
-                );
-              });
-        },
-      )),
-    );
+                  child: const Text(
+                    "Post",
+                    style: TextStyle(
+                        color: Colors.blueAccent,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0),
+                  ),
+                )
+              ],
+            ),
+            // POST FORM
+            body: Column(
+              children: <Widget>[
+                isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(padding: EdgeInsets.only(top: 0.0)),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        userProvider.getUser.photoUrl,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: TextField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                            hintText: "Write a caption...",
+                            border: InputBorder.none),
+                        maxLines: 8,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45.0,
+                      width: 45.0,
+                      child: AspectRatio(
+                        aspectRatio: 487 / 451,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                            fit: BoxFit.fill,
+                            alignment: FractionalOffset.topCenter,
+                            image: MemoryImage(_file!),
+                          )),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+              ],
+            ),
+          );
   }
 }
