@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:catstagram/utils/utils.dart';
+import 'package:catstagram/providers/user_provider.dart';
+import 'package:catstagram/resources/firestore_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:catstagram/providers/user_provider.dart';
@@ -8,6 +9,8 @@ import 'package:catstagram/resources/firestore_methods.dart';
 import 'package:catstagram/utils/colors.dart';
 import 'package:catstagram/utils/utils.dart';
 import 'package:provider/provider.dart';
+
+import '../utils/utils.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -125,6 +128,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           )
         : Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.black,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: clearImage,
@@ -135,11 +139,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
               centerTitle: false,
               actions: <Widget>[
                 TextButton(
-                  onPressed: () => postImage(
-                    userProvider.getUser.uid,
-                    userProvider.getUser.username,
-                    userProvider.getUser.photoUrl,
-                  ),
+                  onPressed: () {
+                    postImage(
+                      userProvider.getUser.uid,
+                      userProvider.getUser.username,
+                      userProvider.getUser.photoUrl,
+                    );
+                    print("${userProvider.getUser.uid}");
+                  },
                   child: const Text(
                     "Post",
                     style: TextStyle(
@@ -161,11 +168,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        userProvider.getUser.photoUrl,
-                      ),
-                    ),
+                   // CircleAvatar(
+                     // backgroundImage: NetworkImage(
+                       // userProvider.getUser.photoUrl,
+                      //),
+                    //),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: TextField(

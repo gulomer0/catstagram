@@ -1,3 +1,4 @@
+import 'package:catstagram/providers/user_provider.dart';
 import 'package:catstagram/screens/add_screen.dart';
 import 'package:catstagram/screens/home_screen.dart';
 import 'package:catstagram/screens/likes_screen.dart';
@@ -5,6 +6,7 @@ import 'package:catstagram/screens/profile_screen.dart';
 import 'package:catstagram/screens/search_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({super.key});
@@ -22,6 +24,18 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     LikesScreen(),
     ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
+
+  void initState() {
+    super.initState();
+    addData();
+  }
+
+  addData() async {
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
 
   @override
   Widget build(BuildContext context) {
