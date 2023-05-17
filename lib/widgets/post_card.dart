@@ -80,13 +80,14 @@ class _PostCardState extends State<PostCard> {
           // HEADER SECTION OF THE POST
           Container(
             padding: const EdgeInsets.symmetric(
-              vertical: 4,
+              vertical:4,
               horizontal: 16,
             ).copyWith(right: 0),
             child: Row(
               children: <Widget>[
                 CircleAvatar(
                   radius: 16,
+                  backgroundColor: Colors.grey,
                   backgroundImage: NetworkImage(
                     widget.snap['profImage'].toString(),
                   ),

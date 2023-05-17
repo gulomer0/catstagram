@@ -110,20 +110,23 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? Center(
-            child: IconButton(
-              iconSize: 50,
-              icon: const Icon(
-                Icons.upload,
+        ? WillPopScope(
+          onWillPop: () async => false,
+          child: Center(
+              child: IconButton(
+                iconSize: 50,
+                icon: const Icon(
+                  Icons.upload,
+                ),
+                onPressed: () => _selectImage(context),
               ),
-              onPressed: () => _selectImage(context),
             ),
-          )
+        )
         : Scaffold(
             appBar: AppBar(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               leading: IconButton(
-                icon: const Icon(Icons.cancel_outlined,
+                icon: const Icon(Icons.cancel,
                 color: Colors.orangeAccent,),
                 onPressed: clearImage,
               ),
@@ -159,7 +162,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       color: Colors.orangeAccent
                     )
                     : const Padding(padding: EdgeInsets.only(top: 0.0)),
-                const Divider(),
+                Divider(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +203,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                   ],
                 ),
-                const Divider(),
+                Divider(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
               ],
             ),
           );

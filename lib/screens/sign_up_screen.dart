@@ -62,6 +62,7 @@ class _SignupScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Text(""),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
@@ -70,9 +71,6 @@ class _SignupScreenState extends State<SignUpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height: 70,
-              ),
               Stack(
                 children: [
                   _image != null
@@ -179,7 +177,7 @@ class _SignupScreenState extends State<SignUpScreen> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.12,
+                height: MediaQuery.of(context).size.height * 0.001,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -52,8 +52,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
         leading: Text(""),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: const Text(
-          'Comments',
+        title: Image.asset(
+          "assets/images/cat.png",
+          height: 40,
         ),
         centerTitle: true,
       ),
@@ -118,7 +119,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: const Text(
-                    'Post',
+                    'Post  ',
+                    style: TextStyle(
+                      color: Colors.orangeAccent,
+                    ),
                   ),
                 ),
               )

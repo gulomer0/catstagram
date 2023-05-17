@@ -15,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -25,6 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginUser() async {
+    setState(() {
+      isLoading = true;
+    });
     String res = await AuthMethods().loginUser(
       email: _emailController.text,
       password: _passwordController.text,
@@ -33,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const MobileScreenLayout(),
+          builder: (context) => MobileScreenLayout(),
         ),
       );
     } else {
@@ -43,12 +47,16 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Text(""),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
@@ -57,7 +65,14 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Lottie.asset('assets/lotties/happy_cat.json'),
+              //Lottie.asset('assets/lotties/happy_cat.json'),
+              Image.asset(
+                "assets/images/cat.png",
+                height: 200,
+              ),
+              SizedBox(
+                height: 100,
+              ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TextField(
@@ -97,12 +112,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.orangeAccent),
                   ),
-                  onPressed: loginUser,
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Row(
+                            children: [
+                              CircularProgressIndicator(
+                                color: Colors.orangeAccent,
+                              ),
+                              SizedBox(width: 20),
+                              Text('Yükleniyor...'),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                    loginUser();
+                  },
                   child: Text('Login'),
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.12,
+                height: MediaQuery.of(context).size.height * 0.001,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

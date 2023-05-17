@@ -41,6 +41,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Text(""),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Image.asset(
@@ -52,6 +53,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       ),
       body: pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
