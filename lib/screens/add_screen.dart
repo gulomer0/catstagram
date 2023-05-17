@@ -29,11 +29,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
       context: parentContext,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Create a Post'),
           children: <Widget>[
             SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
-                child: const Text('Take a photo'),
+                child: const Text('Take a photo', textAlign: TextAlign.center,),
                 onPressed: () async {
                   Navigator.pop(context);
                   Uint8List file = await pickImage(ImageSource.camera);
@@ -43,7 +42,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 }),
             SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
-                child: const Text('Choose from Gallery'),
+                child: const Text('Choose from Gallery', textAlign: TextAlign.center,),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   Uint8List file = await pickImage(ImageSource.gallery);
@@ -51,13 +50,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     _file = file;
                   });
                 }),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text("Cancel"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
           ],
         );
       },
@@ -120,6 +112,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     return _file == null
         ? Center(
             child: IconButton(
+              iconSize: 50,
               icon: const Icon(
                 Icons.upload,
               ),
@@ -128,13 +121,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.black,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(Icons.cancel_outlined,
+                color: Colors.orangeAccent,),
                 onPressed: clearImage,
-              ),
-              title: const Text(
-                'Post to',
               ),
               centerTitle: false,
               actions: <Widget>[
@@ -147,45 +138,52 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     );
                     print("${userProvider.getUser.uid}");
                   },
-                  child: const Text(
+                  child: Text(
                     "Post",
                     style: TextStyle(
-                        color: Colors.blueAccent,
+                        color: Colors.orangeAccent,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16.0),
+                        fontSize: 18.0),
                   ),
-                )
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.02,
+                ),
               ],
             ),
             // POST FORM
             body: Column(
               children: <Widget>[
                 isLoading
-                    ? const LinearProgressIndicator()
+                    ? const LinearProgressIndicator(
+                      color: Colors.orangeAccent
+                    )
                     : const Padding(padding: EdgeInsets.only(top: 0.0)),
                 const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                   // CircleAvatar(
-                     // backgroundImage: NetworkImage(
-                       // userProvider.getUser.photoUrl,
-                      //),
-                    //),
+                   /*CircleAvatar(
+                     backgroundImage: NetworkImage(
+                       userProvider.getUser.photoUrl,
+                      ),
+                    ),*/
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: TextField(
+                        cursorColor: Colors.orangeAccent,
                         controller: _descriptionController,
                         decoration: const InputDecoration(
+                          
                             hintText: "Write a caption...",
                             border: InputBorder.none),
                         maxLines: 8,
                       ),
                     ),
                     SizedBox(
-                      height: 45.0,
-                      width: 45.0,
+                      height: 170,
+                      width: 170,
                       child: AspectRatio(
                         aspectRatio: 487 / 451,
                         child: Container(

@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: "Catstagram",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.light(),
+        theme: ThemeData.dark(),
         /*.copyWith(
           scaffoldBackgroundColor: mobileBackgroundColor,
         ),*/

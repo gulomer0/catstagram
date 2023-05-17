@@ -49,22 +49,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: Text(""),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: const Text(
           'Comments',
-          style: TextStyle(
-            color: Colors.black,
-          ),
         ),
-        centerTitle: false,
+        centerTitle: true,
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -77,7 +68,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(
-                color: Colors.black,
+                
               ),
             );
           }
@@ -107,12 +98,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
-                    cursorColor: Colors.white,
-                    style: TextStyle(color: Colors.black),
+                    cursorColor: Colors.orangeAccent,
                     controller: commentEditingController,
                     decoration: InputDecoration(
                       hintText: 'Comment as ${user.username}',
-                      hintStyle: const TextStyle(color: Colors.black),
+                      hintStyle: const TextStyle(),
                       border: InputBorder.none,
                     ),
                   ),
@@ -129,7 +119,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: const Text(
                     'Post',
-                    style: TextStyle(color: Colors.black),
                   ),
                 ),
               )

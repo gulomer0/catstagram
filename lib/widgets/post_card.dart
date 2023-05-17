@@ -70,7 +70,6 @@ class _PostCardState extends State<PostCard> {
     return Container(
       // boundary needed for web
       decoration: BoxDecoration(
-        border: Border.all(),
         color: Theme.of(context).scaffoldBackgroundColor,
       ),
       padding: const EdgeInsets.symmetric(
@@ -105,7 +104,7 @@ class _PostCardState extends State<PostCard> {
                           widget.snap['username'].toString(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            
                           ),
                         ),
                       ],
@@ -114,7 +113,6 @@ class _PostCardState extends State<PostCard> {
                 ),
                 widget.snap['uid'].toString() == user.uid
                     ? IconButton(
-                        color: Colors.black,
                         onPressed: () {
                           showDialog(
                             useRootNavigator: false,
@@ -129,7 +127,7 @@ class _PostCardState extends State<PostCard> {
                                         vertical: 16),
                                     shrinkWrap: true,
                                     children: [
-                                      'Delete',
+                                      'Delete' ,
                                     ]
                                         .map(
                                           (e) => InkWell(
@@ -138,7 +136,7 @@ class _PostCardState extends State<PostCard> {
                                                     const EdgeInsets.symmetric(
                                                         vertical: 12,
                                                         horizontal: 16),
-                                                child: Text(e),
+                                                child: Text(e, textAlign: TextAlign.center,),
                                               ),
                                               onTap: () {
                                                 deletePost(
@@ -213,7 +211,6 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['likes'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                  color: Colors.black,
                   icon: widget.snap['likes'].contains(user.uid)
                       ? const Icon(
                           Icons.favorite,
@@ -231,7 +228,6 @@ class _PostCardState extends State<PostCard> {
               ),
               IconButton(
                 icon: const Icon(
-                  color: Colors.black,
                   Icons.comment_outlined,
                 ),
                 onPressed: () => Navigator.of(context).push(
@@ -258,7 +254,6 @@ class _PostCardState extends State<PostCard> {
                         .copyWith(fontWeight: FontWeight.w800),
                     child: Text('${widget.snap['likes'].length} likes',
                         style: const TextStyle(
-                          color: Colors.black,
                         ))),
                 Container(
                   width: double.infinity,

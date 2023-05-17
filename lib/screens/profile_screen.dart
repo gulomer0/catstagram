@@ -116,11 +116,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             widget.uid
                                         ? FollowButton(
                                             text: 'Sign Out',
-                                            backgroundColor:
-                                                Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                            textColor: Colors.black,
-                                            borderColor: Colors.grey,
+                                            backgroundColor: Colors.redAccent,
+                                            textColor: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            borderColor: Colors.redAccent,
                                             function: () async {
                                               await AuthMethods().signOut();
                                               Navigator.of(context)

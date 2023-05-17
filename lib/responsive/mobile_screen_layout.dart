@@ -55,7 +55,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+          BottomNavigationBarItem(icon: Icon(Icons.add_box), label: "Add"),
           //BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Likes"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
