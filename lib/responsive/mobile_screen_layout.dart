@@ -21,7 +21,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     HomeScreen(),
     SearchScreen(),
     AddPostScreen(),
-    LikesScreen(),
+    //LikesScreen(),
     ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
 
@@ -53,10 +53,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       body: pageList[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Likes"),
+          //BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Likes"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         currentIndex: _selectedIndex,

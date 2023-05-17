@@ -1,151 +1,319 @@
+import 'package:catstagram/screens/comments_screen.dart';
+import 'package:catstagram/widgets/like_animation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:catstagram/models/user.dart' as model;
+import 'package:catstagram/providers/user_provider.dart';
+import 'package:catstagram/resources/firestore_methods.dart';
+import 'package:catstagram/screens/comments_screen.dart';
+import 'package:catstagram/utils/colors.dart';
+import 'package:catstagram/utils/utils.dart';
+import 'package:catstagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class PostCart extends StatefulWidget {
-  
-  var snap;
-
-  PostCart({this.snap});
+class PostCard extends StatefulWidget {
+  final snap;
+  const PostCard({
+    Key? key,
+    required this.snap,
+    required postUrl,
+  }) : super(key: key);
 
   @override
-  State<PostCart> createState() => _PostCartState();
+  State<PostCard> createState() => _PostCardState();
 }
 
-class _PostCartState extends State<PostCart> {
+class _PostCardState extends State<PostCard> {
+  int commentLen = 0;
+  bool isLikeAnimating = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCommentLen();
+  }
+
+  fetchCommentLen() async {
+    try {
+      QuerySnapshot snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .get();
+      commentLen = snap.docs.length;
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
+    setState(() {});
+  }
+
+  deletePost(String postId) async {
+    try {
+      await FireStoreMethods().deletePost(postId);
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child:Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+    final model.User user = Provider.of<UserProvider>(context).getUser;
+    final width = MediaQuery.of(context).size.width;
+
+    return Container(
+      // boundary needed for web
+      decoration: BoxDecoration(
+        border: Border.all(),
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+      ),
+      child: Column(
+        children: [
+          // HEADER SECTION OF THE POST
+          Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 4,
+              horizontal: 16,
+            ).copyWith(right: 0),
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 16,
+                  backgroundImage: NetworkImage(
+                    widget.snap['profImage'].toString(),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          widget.snap['username'].toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                widget.snap['uid'].toString() == user.uid
+                    ? IconButton(
+                        color: Colors.black,
+                        onPressed: () {
+                          showDialog(
+                            useRootNavigator: false,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                elevation: 0,
+                                backgroundColor: Theme.of(context)
+                                    .scaffoldBackgroundColor,
+                                child: ListView(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                    shrinkWrap: true,
+                                    children: [
+                                      'Delete',
+                                    ]
+                                        .map(
+                                          (e) => InkWell(
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 12,
+                                                        horizontal: 16),
+                                                child: Text(e),
+                                              ),
+                                              onTap: () {
+                                                deletePost(
+                                                  widget.snap['postId']
+                                                      .toString(),
+                                                );
+                                                // remove the dialog box
+                                                Navigator.of(context).pop();
+                                              }),
+                                        )
+                                        .toList()),
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.more_vert),
+                      )
+                    : Container(),
+              ],
+            ),
+          ),
+          // IMAGE SECTION OF THE POST
+          GestureDetector(
+            onDoubleTap: () {
+              FireStoreMethods().likePost(
+                widget.snap['postId'].toString(),
+                user.uid,
+                widget.snap['likes'],
+              );
+              setState(() {
+                isLikeAnimating = true;
+              });
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  width: double.infinity,
+                  child: Image.network(
+                    widget.snap['postUrl'].toString(),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: isLikeAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    isAnimating: isLikeAnimating,
+                    child: const Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 100,
+                    ),
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // LIKE, COMMENT SECTION OF THE POST
+          Row(
             children: <Widget>[
-              Card(
-                margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.width * 0.00,
-                    bottom: MediaQuery.of(context).size.width * 0.00,
-                    left: MediaQuery.of(context).size.width * 0.00,
-                    right: MediaQuery.of(context).size.width * 0.00),
-                elevation: 0,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context).size.width *
-                                        0.03,
-                                    top: MediaQuery.of(context).size.width *
-                                        0.03,
-                                    left: MediaQuery.of(context).size.width *
-                                        0.03),
-                                child: CircleAvatar(
-                                  radius:
-                                      MediaQuery.of(context).size.width * 0.04,
-                                  backgroundImage: NetworkImage(widget.snap[
-                                          'profImage']
-                                      .toString()),
-                                )),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width *
-                                          0.025),
-                                  child: Text(
-                                    "${widget.snap['username'].toString()}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width *
-                                          0.025),
-                                  child: Text("Konum Bilgisi Yok",
-                                      style: TextStyle(color: Colors.grey)),
-                                ),
-                              ],
-                            )
-                          ],
+              LikeAnimation(
+                isAnimating: widget.snap['likes'].contains(user.uid),
+                smallLike: true,
+                child: IconButton(
+                  color: Colors.black,
+                  icon: widget.snap['likes'].contains(user.uid)
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          Icons.favorite_border,
                         ),
-                      ],
+                  onPressed: () => FireStoreMethods().likePost(
+                    widget.snap['postId'].toString(),
+                    user.uid,
+                    widget.snap['likes'],
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(
+                  color: Colors.black,
+                  Icons.comment_outlined,
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentsScreen(
+                      postId: widget.snap['postId'].toString(),
                     ),
-                    Image.network(
-                      "${widget.snap['postUrl'].toString()}",
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.favorite_border,
-                              color: Colors.grey,
-                              size: MediaQuery.of(context).size.width * 0.07),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.mode_comment_outlined,
-                              color: Colors.grey,
-                              size: MediaQuery.of(context).size.width * 0.07),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.03),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text("1${widget.snap['likes'].length} beğenme",
-                              style: TextStyle(fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.03),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text("${widget.snap['username'].toString()}",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(" "),
-                          Text("${widget.snap['description']}")
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.03),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text("14 yorumu gör",
-                              style: TextStyle(color: Colors.grey))
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.03),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                    DateFormat.yMMMd()
-                        .format(widget.snap['datePublished'].toDate()),
-                              style: TextStyle(color: Colors.grey))
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
+          //DESCRIPTION AND NUMBER OF COMMENTS
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                DefaultTextStyle(
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2!
+                        .copyWith(fontWeight: FontWeight.w800),
+                    child: Text('${widget.snap['likes'].length} likes',
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ))),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(),
+                      children: [
+                        TextSpan(
+                          text: widget.snap['username'].toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' ${widget.snap['description']}',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  child: Container(
+                    child: Text(
+                      'View all $commentLen comments',
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                  ),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => CommentsScreen(
+                        postId: widget.snap['postId'].toString(),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    DateFormat.yMMMd()
+                        .format(widget.snap['datePublished'].toDate()),
+                    style: const TextStyle(
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

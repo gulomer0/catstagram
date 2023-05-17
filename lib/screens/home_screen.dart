@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context, snapshot) {
-           if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -27,16 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    return PostCart(
-                      snap: snapshot.data!.docs[index].data(),
-                    );
+                    return PostCard(
+                        snap: snapshot.data!.docs[index].data(), postUrl: null);
                   });
             } else if (snapshot.hasError) {
               return Center(
                 child: Text('${snapshot.error}'),
               );
             }
-          }  
+          }
           return const Center(
             child: CircularProgressIndicator(),
           );
