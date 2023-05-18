@@ -54,4 +54,12 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Mic Usage</string>
 </dict>
+<key>UIInterfaceOrientation</key>
+<string>UIInterfaceOrientationPortrait</string>
+<key>UISupportedInterfaceOrientations</key>
+<array>
+    <string>UIInterfaceOrientationPortrait</string>
+</array>
+<key>UIViewControllerPortraitUpsideDown</key>
+<false/>
 </plist>
