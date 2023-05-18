@@ -2,8 +2,6 @@ import 'package:catstagram/firebase_options.dart';
 import 'package:catstagram/providers/user_provider.dart';
 import 'package:catstagram/responsive/mobile_screen_layout.dart';
 import 'package:catstagram/screens/login_screen.dart';
-import 'package:catstagram/screens/sign_up_screen.dart';
-import 'package:catstagram/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
