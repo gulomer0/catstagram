@@ -29,11 +29,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: "Catstagram",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(),
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        //ThemeData.light(),
         /*.copyWith(
           scaffoldBackgroundColor: mobileBackgroundColor,
         ),*/
-    
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

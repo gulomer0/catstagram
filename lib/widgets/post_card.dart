@@ -72,9 +72,7 @@ class _PostCardState extends State<PostCard> {
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
       ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
+
       child: Column(
         children: [
           // HEADER SECTION OF THE POST
@@ -261,20 +259,10 @@ class _PostCardState extends State<PostCard> {
                   padding: const EdgeInsets.only(
                     top: 8,
                   ),
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(),
-                      children: [
-                        TextSpan(
-                          text: widget.snap['username'].toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' ${widget.snap['description']}',
-                        ),
-                      ],
+                  child: Text(
+                    '${widget.snap['username']} ${widget.snap['description']}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
