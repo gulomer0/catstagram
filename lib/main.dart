@@ -1,5 +1,6 @@
 import 'package:catstagram/firebase_options.dart';
 import 'package:catstagram/providers/user_provider.dart';
+import 'package:catstagram/responsive/mobile_screen_layout.dart';
 import 'package:catstagram/screens/login_screen.dart';
 import 'package:catstagram/screens/sign_up_screen.dart';
 import 'package:catstagram/utils/colors.dart';
@@ -17,10 +18,12 @@ void main() async {
 
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
+
+  
+
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -41,14 +44,14 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.active) {
               // Checking if the snapshot has any data or not
               if (snapshot.hasData) {
-                return const LoginScreen();
+                return const MobileScreenLayout();
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text('${snapshot.error}'),
                 );
               }
             }
-            // means connection to future hasnt been made yet
+            // means connection to xfuture hasnt been made yet
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),

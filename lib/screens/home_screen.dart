@@ -20,45 +20,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        body: LiquidPullToRefresh(
-          color: Colors.orangeAccent,
-        onRefresh: _handleRefresh,
-        animSpeedFactor: 6,
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.orangeAccent,
-                  ),
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.active) {
-                // Checking if the snapshot has any data or not
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        return PostCard(
-                            snap: snapshot.data!.docs[index].data(), postUrl: null);
-                      });
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('${snapshot.error}'),
-                  );
-                }
-              }
+    return Scaffold(
+      body: LiquidPullToRefresh(
+        color: Colors.orangeAccent,
+      onRefresh: _handleRefresh,
+      animSpeedFactor: 6,
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(
-                  color: Colors.orangeAccent
+                  color: Colors.orangeAccent,
                 ),
               );
-            },
-          ),
+            }
+            if (snapshot.connectionState == ConnectionState.active) {
+              // Checking if the snapshot has any data or not
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      return PostCard(
+                          snap: snapshot.data!.docs[index].data(), postUrl: null);
+                    });
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.orangeAccent
+              ),
+            );
+          },
         ),
       ),
     );

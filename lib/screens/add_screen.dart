@@ -110,18 +110,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? WillPopScope(
-          onWillPop: () async => false,
-          child: Center(
-              child: IconButton(
-                iconSize: 50,
-                icon: const Icon(
-                  Icons.upload,
-                ),
-                onPressed: () => _selectImage(context),
+        ? Center(
+            child: IconButton(
+              iconSize: 50,
+              icon: const Icon(
+                Icons.upload,
               ),
+              onPressed: () => _selectImage(context),
             ),
-        )
+          )
         : Scaffold(
             appBar: AppBar(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,

@@ -39,36 +39,39 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Text(""),
-        elevation: 0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Image.asset(
-          "assets/images/cat.png",
-          height: 40,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Text(""),
+          elevation: 0,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          title: Image.asset(
+            "assets/images/cat.png",
+            height: 40,
+          ),
+          centerTitle: true,
+          actions: [],
         ),
-        centerTitle: true,
-        actions: [],
-      ),
-      body: pageList[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.add_box), label: "Add"),
-          //BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Likes"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.orangeAccent,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        body: pageList[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+            BottomNavigationBarItem(icon: Icon(Icons.add_box), label: "Add"),
+            //BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Likes"),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.orangeAccent,
+          unselectedItemColor: Colors.grey,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

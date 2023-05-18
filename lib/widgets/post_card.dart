@@ -250,7 +250,7 @@ class _PostCardState extends State<PostCard> {
                     style: Theme.of(context)
                         .textTheme
                         .subtitle2!
-                        .copyWith(fontWeight: FontWeight.w800),
+                        .copyWith(fontWeight: FontWeight.w700),
                     child: Text('${widget.snap['likes'].length} likes',
                         style: const TextStyle(
                         ))),
@@ -259,11 +259,16 @@ class _PostCardState extends State<PostCard> {
                   padding: const EdgeInsets.only(
                     top: 8,
                   ),
-                  child: Text(
-                    '${widget.snap['username']} ${widget.snap['description']}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${widget.snap['username']}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(" ${widget.snap['description']}"),
+                    ],
                   ),
                 ),
                 InkWell(
