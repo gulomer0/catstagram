@@ -24,18 +24,12 @@ class CommentCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: snap.data()['name'],
-                            ),
-                        TextSpan(
-                          text: ' ${snap.data()['text']}',
-                        ),
-                      ],
-                    ),
-                  ),
+                  Row(
+                    children: [
+                  Text("${snap.data()['name']}", style: const TextStyle(
+                    fontWeight: FontWeight.bold,)),
+                  Text(" ${snap.data()['text']}"),
+                ]),
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
